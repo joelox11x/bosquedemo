@@ -491,19 +491,34 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .form-submit:hover{background:var(--pine-800);}
 .form-note{font-size:0.8rem; color:#8b8271; margin-top:16px;}
 
-/* ---- Squirrel mascot accents (reused asset — same character as the mobile-menu guide) ---- */
-.squirrel-static{
-  position:absolute; width:38px; height:38px; pointer-events:none; z-index:6;
-  filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+/* ---- Squirrel mascot — peeking from corners/edges (same character as the mobile-menu guide) ---- */
+/* Discrete, corner-anchored, never overlaps text or image content — just perches on the outer edge. */
+.squirrel-peek{
+  position:absolute; pointer-events:none; z-index:6;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,0.28));
+  width:34px; height:34px;
 }
-.squirrel-static .squirrel-flip{width:100%; height:100%;}
-.squirrel-static .squirrel-squash{width:100%; height:100%; transform-origin:50% 100%; animation:squirrelIdle 1.7s ease-in-out infinite;}
-.squirrel-static svg{width:100%; height:100%; display:block;}
-.submit-wrap .squirrel-static{ top:-19px; right:14px; transform:rotate(-6deg); }
+.squirrel-peek .peek-body{width:100%; height:100%; transform-origin:50% 100%; animation:squirrelPeekBob 3.4s ease-in-out infinite;}
+.squirrel-peek svg{width:100%; height:100%; display:block; overflow:visible;}
+@keyframes squirrelPeekBob{
+  0%, 100% { transform:translateY(0) rotate(0deg); }
+  50%      { transform:translateY(-2px) rotate(-1.5deg); }
+}
+@media(min-width:900px){ .squirrel-peek{ width:42px; height:42px; } }
+
+/* Corner of the forest photo frame — peeking out of the image, mostly outside the picture */
+.about-media .squirrel-peek{ top:-13px; right:18px; transform:rotate(-8deg); }
+
+/* Perched on the top edge of the WhatsApp send button, looking down at it */
+.submit-wrap .squirrel-peek{ top:-22px; right:22px; transform:rotate(6deg); }
+
+/* Tucked at the edge of the floating WhatsApp bubble, not covering the icon */
 .float-wa{ overflow:visible; }
-.float-wa .squirrel-static{ width:34px; height:34px; top:-14px; left:-10px; transform:scaleX(-1) rotate(8deg); opacity:0.98; transition:opacity .3s ease; }
+.float-wa .squirrel-peek{ width:30px; height:30px; top:-11px; left:-9px; transform:scaleX(-1) rotate(-8deg); }
+@media(min-width:900px){ .float-wa .squirrel-peek{ width:36px; height:36px; } }
+
 @media(prefers-reduced-motion: reduce){
-  .squirrel-static .squirrel-squash{ animation:none; }
+  .squirrel-peek .peek-body{ animation:none; }
 }
 
 /* ---- Footer ---- */
@@ -584,21 +599,24 @@ footer{
     <div class="squirrel-shadow"></div>
     <div class="squirrel-flip">
       <div class="squirrel-squash">
-        <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
-          <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
-          <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
-          <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
-          <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
-          <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
-          <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
-          <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
-          <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
-          <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
-          <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
-          <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
-          <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
-          <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
+        <svg viewBox="0 0 120 112" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="60" cy="106" rx="26" ry="5" fill="#000" opacity="0.001"/>
+          <path d="M92 98 C118 90 126 58 105 36 C93 23 74 21 62 30 C77 27 90 37 92 52 C94 65 85 75 72 74 C83 70 87 59 82 49 C79 41 70 37 61 41 C70 41 76 48 76 56 C76 64 68 70 60 67 C57 81 70 95 92 98 Z" fill="#5c3a20"/>
+          <path d="M86 90 C106 83 112 58 96 40 C87 30 73 28 64 35 C75 33 85 41 87 53 C89 63 82 71 72 70 C80 67 83 58 79 51 C77 45 70 42 63 45 C70 45 75 51 75 58 C75 64 69 68 63 66 C61 76 70 87 86 90 Z" fill="#8a5a34"/>
+          <ellipse cx="46" cy="74" rx="24" ry="28" fill="#5c3a20"/>
+          <ellipse cx="53" cy="84" rx="13" ry="18" fill="#f2e6cf"/>
+          <ellipse cx="62" cy="101" rx="13" ry="7" fill="#5c3a20"/>
+          <circle cx="27" cy="42" r="20" fill="#5c3a20"/>
+          <path d="M12 28 C9 19 15 12 23 15 C18 20 16 25 18 31 C15 31 13 30 12 28 Z" fill="#5c3a20"/>
+          <path d="M14.5 25.5 C13 20 17 16 21.5 17.5 C18.5 20.5 17 24 18 27.5 C16.5 27.5 15.5 26.5 14.5 25.5 Z" fill="#e9c9a0"/>
+          <path d="M38 22 C38 13 45 8 52 13 C45 15 41 20 41 26 C39.5 25.5 38.5 23.5 38 22 Z" fill="#5c3a20"/>
+          <path d="M40 21 C40 15 44.5 11.5 49.5 14 C45 16 42 19 42 23.5 C41 23 40.5 22 40 21 Z" fill="#e9c9a0"/>
+          <circle cx="19" cy="40" r="3.4" fill="#241a10"/>
+          <circle cx="17.7" cy="38.6" r="1.1" fill="#fff"/>
+          <circle cx="6" cy="47" r="2.4" fill="#3a2415"/>
+          <path d="M9 51 C4 55 -2 53 -4 48 C1 49 6 48 9 45 Z" fill="#f2e6cf"/>
+          <ellipse cx="16" cy="68" rx="9" ry="11" fill="#8a5a34"/>
+          <path d="M7 65 C7 72 12 76 19 75 C14 73 11 68 11 63 Z" fill="#f2e6cf"/>
         </svg>
       </div>
     </div>
@@ -645,6 +663,25 @@ footer{
     </div>
     <div class="about-media reveal">
       <div class="frame"><img class="lazy-fade" src="https://arqfra-ai.com/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-05-at-6.55.35-PM-1.jpeg" alt="Terreno arbolado en Bosque Peña Alta, Tapalpa" loading="lazy"></div>
+      <div class="squirrel-peek" aria-hidden="true">
+        <div class="peek-body">
+          <svg viewBox="0 0 80 84" xmlns="http://www.w3.org/2000/svg">
+            <path d="M52 78 C34 82 16 70 16 50 C16 34 28 22 44 22 C34 28 28 38 30 48 C32 58 42 64 52 60 C44 56 40 48 44 40 C47 34 55 32 61 37 C55 39 52 45 55 51 C58 57 66 58 71 53 C72 63 65 74 52 78 Z" fill="#6b4326"/>
+            <path d="M50 70 C38 72 28 62 28 50 C28 40 35 32 45 31 C39 35 36 42 38 49 C40 56 47 60 54 57 C49 55 47 50 49 45 C51 41 56 40 60 43 C56 45 54 49 56 53 C58 57 63 57 66 54 C66 61 61 68 50 70 Z" fill="#8a5a34"/>
+            <circle cx="34" cy="44" r="19" fill="#6b4326"/>
+            <path d="M20 32 C17 24 22 18 29 20 C25 24 23 29 25 34 C22 34 21 33 20 32 Z" fill="#6b4326"/>
+            <path d="M22.5 30 C21 25.5 24 22 28 23 C25.5 25.5 24.5 28.5 25.5 31.5 C24 31.5 23 31 22.5 30 Z" fill="#e9c9a0"/>
+            <path d="M42 26 C42 18 48 14 54 18 C48 20 45 24 45 29 C43 28.5 42.5 27 42 26 Z" fill="#6b4326"/>
+            <path d="M43.5 25 C43.5 20 47 17.5 51 19.5 C47.5 21 45.5 23.5 45.5 27 C44.5 26.5 44 25.5 43.5 25 Z" fill="#e9c9a0"/>
+            <circle cx="27" cy="42" r="3" fill="#241a10"/>
+            <circle cx="26" cy="41" r="0.9" fill="#fff"/>
+            <circle cx="15" cy="48" r="2.2" fill="#3a2415"/>
+            <path d="M17 52 C13 55 8 54 6 50 C10 51 14 50 17 47 Z" fill="#f2e6cf"/>
+            <ellipse cx="30" cy="74" rx="9" ry="10" fill="#8a5a34"/>
+            <path d="M22 72 C22 78 26 82 32 81 C28 79 25 75 25 71 Z" fill="#f2e6cf"/>
+          </svg>
+        </div>
+      </div>
       <div class="tag-card">
         <strong>1 km</strong>
         <span>De distancia al centro histórico de Tapalpa</span>
@@ -835,26 +872,23 @@ footer{
           <textarea id="fmsg" placeholder="Cuéntanos qué te gustaría saber"></textarea>
         </div>
         <div class="submit-wrap">
-          <div class="squirrel-static" aria-hidden="true">
-            <div class="squirrel-flip">
-              <div class="squirrel-squash">
-                <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
-                  <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
-                  <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
-                  <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
-                  <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
-                  <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
-                  <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
-                  <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
-                  <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
-                  <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
-                  <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
-                  <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
-                  <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
-                  <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
-                </svg>
-              </div>
+          <div class="squirrel-peek" aria-hidden="true">
+            <div class="peek-body">
+              <svg viewBox="0 0 80 84" xmlns="http://www.w3.org/2000/svg">
+                <path d="M52 78 C34 82 16 70 16 50 C16 34 28 22 44 22 C34 28 28 38 30 48 C32 58 42 64 52 60 C44 56 40 48 44 40 C47 34 55 32 61 37 C55 39 52 45 55 51 C58 57 66 58 71 53 C72 63 65 74 52 78 Z" fill="#6b4326"/>
+                <path d="M50 70 C38 72 28 62 28 50 C28 40 35 32 45 31 C39 35 36 42 38 49 C40 56 47 60 54 57 C49 55 47 50 49 45 C51 41 56 40 60 43 C56 45 54 49 56 53 C58 57 63 57 66 54 C66 61 61 68 50 70 Z" fill="#8a5a34"/>
+                <circle cx="34" cy="44" r="19" fill="#6b4326"/>
+                <path d="M20 32 C17 24 22 18 29 20 C25 24 23 29 25 34 C22 34 21 33 20 32 Z" fill="#6b4326"/>
+                <path d="M22.5 30 C21 25.5 24 22 28 23 C25.5 25.5 24.5 28.5 25.5 31.5 C24 31.5 23 31 22.5 30 Z" fill="#e9c9a0"/>
+                <path d="M42 26 C42 18 48 14 54 18 C48 20 45 24 45 29 C43 28.5 42.5 27 42 26 Z" fill="#6b4326"/>
+                <path d="M43.5 25 C43.5 20 47 17.5 51 19.5 C47.5 21 45.5 23.5 45.5 27 C44.5 26.5 44 25.5 43.5 25 Z" fill="#e9c9a0"/>
+                <circle cx="27" cy="42" r="3" fill="#241a10"/>
+                <circle cx="26" cy="41" r="0.9" fill="#fff"/>
+                <circle cx="15" cy="48" r="2.2" fill="#3a2415"/>
+                <path d="M17 52 C13 55 8 54 6 50 C10 51 14 50 17 47 Z" fill="#f2e6cf"/>
+                <ellipse cx="30" cy="74" rx="9" ry="10" fill="#8a5a34"/>
+                <path d="M22 72 C22 78 26 82 32 81 C28 79 25 75 25 71 Z" fill="#f2e6cf"/>
+              </svg>
             </div>
           </div>
           <button type="submit" class="btn form-submit">Enviar por WhatsApp</button>
@@ -899,26 +933,23 @@ footer{
 </footer>
 
 <a href="https://wa.me/523411363292" target="_blank" rel="noopener" class="float-wa" aria-label="Escribir por WhatsApp">
-  <div class="squirrel-static" aria-hidden="true">
-    <div class="squirrel-flip">
-      <div class="squirrel-squash">
-        <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
-          <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
-          <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
-          <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
-          <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
-          <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
-          <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
-          <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
-          <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
-          <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
-          <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
-          <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
-          <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
-          <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
-        </svg>
-      </div>
+  <div class="squirrel-peek" aria-hidden="true">
+    <div class="peek-body">
+      <svg viewBox="0 0 80 84" xmlns="http://www.w3.org/2000/svg">
+        <path d="M52 78 C34 82 16 70 16 50 C16 34 28 22 44 22 C34 28 28 38 30 48 C32 58 42 64 52 60 C44 56 40 48 44 40 C47 34 55 32 61 37 C55 39 52 45 55 51 C58 57 66 58 71 53 C72 63 65 74 52 78 Z" fill="#6b4326"/>
+        <path d="M50 70 C38 72 28 62 28 50 C28 40 35 32 45 31 C39 35 36 42 38 49 C40 56 47 60 54 57 C49 55 47 50 49 45 C51 41 56 40 60 43 C56 45 54 49 56 53 C58 57 63 57 66 54 C66 61 61 68 50 70 Z" fill="#8a5a34"/>
+        <circle cx="34" cy="44" r="19" fill="#6b4326"/>
+        <path d="M20 32 C17 24 22 18 29 20 C25 24 23 29 25 34 C22 34 21 33 20 32 Z" fill="#6b4326"/>
+        <path d="M22.5 30 C21 25.5 24 22 28 23 C25.5 25.5 24.5 28.5 25.5 31.5 C24 31.5 23 31 22.5 30 Z" fill="#e9c9a0"/>
+        <path d="M42 26 C42 18 48 14 54 18 C48 20 45 24 45 29 C43 28.5 42.5 27 42 26 Z" fill="#6b4326"/>
+        <path d="M43.5 25 C43.5 20 47 17.5 51 19.5 C47.5 21 45.5 23.5 45.5 27 C44.5 26.5 44 25.5 43.5 25 Z" fill="#e9c9a0"/>
+        <circle cx="27" cy="42" r="3" fill="#241a10"/>
+        <circle cx="26" cy="41" r="0.9" fill="#fff"/>
+        <circle cx="15" cy="48" r="2.2" fill="#3a2415"/>
+        <path d="M17 52 C13 55 8 54 6 50 C10 51 14 50 17 47 Z" fill="#f2e6cf"/>
+        <ellipse cx="30" cy="74" rx="9" ry="10" fill="#8a5a34"/>
+        <path d="M22 72 C22 78 26 82 32 81 C28 79 25 75 25 71 Z" fill="#f2e6cf"/>
+      </svg>
     </div>
   </div>
   <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.03 4C7.6 4 4 7.6 4 12.03c0 1.42.37 2.8 1.08 4.02L4 20l4.06-1.06a8 8 0 0 0 3.97 1.06h.01c4.43 0 8.03-3.6 8.03-8.03a7.9 7.9 0 0 0-2.47-5.65Zm-5.57 12.3h-.01a6.65 6.65 0 0 1-3.4-.93l-.24-.14-2.4.63.64-2.34-.16-.24a6.65 6.65 0 0 1-1.02-3.57c0-3.68 3-6.68 6.7-6.68a6.63 6.63 0 0 1 6.67 6.7c0 3.68-3 6.57-6.78 6.57Zm3.66-4.99c-.2-.1-1.17-.58-1.36-.64-.18-.07-.31-.1-.45.1-.13.2-.51.64-.63.77-.11.13-.23.15-.43.05-.2-.1-.85-.31-1.62-1-.6-.53-1-1.19-1.12-1.39-.12-.2-.01-.31.09-.4.09-.1.2-.24.3-.36.1-.12.13-.2.2-.34.06-.13.03-.25-.02-.35-.05-.1-.45-1.08-.61-1.48-.16-.39-.33-.33-.45-.34h-.38c-.13 0-.35.05-.53.25-.18.2-.7.68-.7 1.66s.72 1.93.82 2.06c.1.13 1.41 2.15 3.42 3.02.48.2.85.33 1.14.42.48.15.91.13 1.26.08.38-.06 1.17-.48 1.34-.94.16-.46.16-.86.11-.94-.05-.09-.18-.14-.38-.24Z"/></svg>

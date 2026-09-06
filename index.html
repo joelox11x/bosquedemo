@@ -194,6 +194,47 @@ header.scrolled .burger span{background:var(--pine-950);}
   .squirrel{display:none !important;}
 }
 
+/* ---- Wild squirrel: site-wide scroll companion ---- */
+.wild-squirrel{
+  position:fixed; top:0; left:0; width:38px; height:38px;
+  z-index:40; opacity:0; pointer-events:none;
+  transition:opacity .4s ease;
+}
+.wild-squirrel.visible{opacity:1;}
+.wild-squirrel .ws-shadow{
+  position:absolute; left:50%; bottom:-3px; width:22px; height:6px; transform:translateX(-50%);
+  background:radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, transparent 72%);
+  transition:opacity .3s ease;
+}
+.wild-squirrel.running .ws-shadow{opacity:0.35;}
+.wild-squirrel .ws-flip{
+  width:100%; height:100%; transition:transform .3s ease;
+  filter:drop-shadow(0 4px 7px rgba(0,0,0,0.35));
+}
+.wild-squirrel.face-left .ws-flip{transform:scaleX(-1);}
+.wild-squirrel .ws-squash{width:100%; height:100%; transform-origin:50% 100%;}
+.wild-squirrel.running .ws-squash{animation:wsRunArc .62s cubic-bezier(.33,.1,.6,1);}
+.wild-squirrel.idle .ws-squash{animation:wsIdlePeek 3.4s ease-in-out infinite;}
+.wild-squirrel svg{width:100%; height:100%; display:block;}
+@keyframes wsRunArc{
+  0%   { transform:translateY(0) scaleY(0.8) scaleX(1.14); }
+  30%  { transform:translateY(-19px) scaleY(1.06) scaleX(0.95); }
+  60%  { transform:translateY(-23px) scaleY(1.02) scaleX(0.98); }
+  85%  { transform:translateY(-4px) scaleY(0.9) scaleX(1.05); }
+  100% { transform:translateY(0) scaleY(1) scaleX(1); }
+}
+@keyframes wsIdlePeek{
+  0%, 100% { transform:translate(0,0) scaleY(1); }
+  6%       { transform:translate(3px,-2px) scaleY(1.02); }
+  13%      { transform:translate(0,0) scaleY(1); }
+  55%      { transform:translate(0,0) scaleY(1); }
+  63%      { transform:translate(-2px,-3px) scaleY(1.02); }
+  70%      { transform:translate(0,0) scaleY(1); }
+}
+@media(prefers-reduced-motion: reduce){
+  .wild-squirrel{display:none !important;}
+}
+
 /* ---- Hero ---- */
 .hero{
   position:relative; min-height:100svh; display:flex; align-items:center; justify-content:center;
@@ -300,9 +341,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 /* ---- Intro / about split ---- */
 .about-grid{display:grid; grid-template-columns:1fr; gap:60px; align-items:center;}
 @media(min-width:900px){.about-grid{grid-template-columns:1fr 1fr;}}
+.about-copy{position:relative; overflow:hidden;}
 .about-copy p{color:var(--ink-soft); margin-bottom:19px; font-size:1.03rem;}
 .about-media{position:relative;}
-.about-media .frame{ aspect-ratio:4/5; overflow:hidden; border-radius:4px; box-shadow:var(--shadow-soft); }
+.about-media .frame{ position:relative; aspect-ratio:4/5; overflow:hidden; border-radius:4px; box-shadow:var(--shadow-soft); }
 .about-media .frame img{width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease);}
 .about-media:hover .frame img{transform:scale(1.06);}
 .about-media .tag-card{
@@ -453,7 +495,7 @@ section{padding:clamp(70px,10vw,120px) 0;}
   width:44px; height:44px; border-radius:50%; background:var(--pine-950); color:var(--white);
   display:flex; align-items:center; justify-content:center; flex:none; font-size:1.15rem;
 }
-.form-card{ background:var(--white); padding:42px; box-shadow:var(--shadow-soft); border-radius:4px; }
+.form-card{ position:relative; background:var(--white); padding:42px; box-shadow:var(--shadow-soft); border-radius:4px; }
 .field{margin-bottom:24px;}
 .field label{display:block; font-size:0.84rem; font-weight:700; color:var(--pine-900); margin-bottom:9px;}
 .field input, .field select, .field textarea{
@@ -1012,6 +1054,213 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
   const url = `https://wa.me/523411363292?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
 });
+
+// ================= Wild squirrel: site-wide scroll companion =================
+(function initWildSquirrel(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
+  const SW = 38, SH = 38; // squirrel visual size, matches CSS
+
+  const ws = document.createElement('div');
+  ws.className = 'wild-squirrel';
+  ws.setAttribute('aria-hidden', 'true');
+  ws.innerHTML = `
+    <div class="ws-shadow"></div>
+    <div class="ws-flip"><div class="ws-squash">
+      <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
+        <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
+        <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
+        <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
+        <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
+        <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
+        <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
+        <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
+        <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
+        <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
+        <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
+        <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
+        <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
+      </svg>
+    </div></div>`;
+  document.body.appendChild(ws);
+
+  function sleep(ms){ return new Promise(res => setTimeout(res, ms)); }
+
+  // Hiding spots along the page, in scroll order. Each hides in a container
+  // that already clips overflow, so the squirrel is genuinely clipped by it —
+  // no z-index illusions.
+  const spotDefs = [
+    { selector: '#bosque .about-copy',                          corner: 'bottom-right' },
+    { selector: '#bosque .about-media .frame',                  corner: 'bottom-left'  },
+    { selector: '#galeria .masonry figure:nth-child(3)',        corner: 'top-right'    },
+    { selector: '#lotes .model-card.featured .model-media-wrap',corner: 'bottom-left'  },
+    { selector: '#cabana .progress-media',                      corner: 'top-right'    },
+    { selector: '#ubicacion .route-media',                      corner: 'bottom-left'  },
+    { selector: '#contacto .form-submit',                       corner: 'orbit'        }
+  ];
+  const spots = spotDefs
+    .map(s => ({ ...s, el: document.querySelector(s.selector) }))
+    .filter(s => s.el);
+
+  let currentIndex = -1;
+  let busy = false;
+  let pendingIndex = null;
+
+  function cornerViewportPoint(rect, corner){
+    switch(corner){
+      case 'bottom-left':  return { x: rect.left - SW*0.3,  y: rect.bottom - SH*0.7, faceLeft:false };
+      case 'bottom-right': return { x: rect.right - SW*0.7, y: rect.bottom - SH*0.7, faceLeft:true  };
+      case 'top-left':     return { x: rect.left - SW*0.3,  y: rect.top - SH*0.3,    faceLeft:false };
+      case 'top-right':    return { x: rect.right - SW*0.7, y: rect.top - SH*0.3,    faceLeft:true  };
+      default:              return { x: rect.left,           y: rect.top,            faceLeft:false };
+    }
+  }
+
+  function placeInHost(hostEl, corner){
+    const w = hostEl.clientWidth, h = hostEl.clientHeight;
+    let left, top, faceLeft;
+    switch(corner){
+      case 'bottom-left':  left = -SW*0.62; top = h - SH*0.65; faceLeft = false; break;
+      case 'bottom-right': left = w - SW*0.38; top = h - SH*0.65; faceLeft = true; break;
+      case 'top-left':     left = -SW*0.62; top = -SH*0.35; faceLeft = false; break;
+      case 'top-right':    left = w - SW*0.38; top = -SH*0.35; faceLeft = true; break;
+      default:              left = 0; top = 0; faceLeft = false;
+    }
+    ws.style.left = left + 'px';
+    ws.style.top = top + 'px';
+    ws.classList.toggle('face-left', faceLeft);
+  }
+
+  function runOrbit(buttonEl, hostEl){
+    const btnRect = buttonEl.getBoundingClientRect();
+    const hostRect = hostEl.getBoundingClientRect();
+    const cx = (btnRect.left - hostRect.left) + 46;
+    const cy = (btnRect.top - hostRect.top) + btnRect.height / 2;
+    const rx = 30, ry = 20, loops = 1.6, duration = 2400;
+    const start = performance.now();
+    ws.classList.remove('idle', 'running');
+    ws.classList.add('visible');
+    ws.style.transition = 'none';
+
+    function frame(now){
+      const progress = Math.min((now - start) / duration, 1);
+      const angle = progress * Math.PI * 2 * loops;
+      const x = cx + rx * Math.cos(angle);
+      const y = cy + ry * Math.sin(angle);
+      ws.style.left = x + 'px';
+      ws.style.top = y + 'px';
+      ws.classList.toggle('face-left', Math.cos(angle) < 0);
+      if (progress < 1){
+        requestAnimationFrame(frame);
+      } else {
+        ws.style.left = (cx - rx) + 'px';
+        ws.style.top = cy + 'px';
+        ws.classList.remove('face-left');
+        ws.classList.add('idle');
+        busy = false;
+        flushPending();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function flushPending(){
+    if (pendingIndex !== null && pendingIndex !== currentIndex){
+      const next = pendingIndex;
+      pendingIndex = null;
+      moveTo(next);
+    }
+  }
+
+  async function moveTo(index){
+    if (index === currentIndex) return;
+    if (busy){ pendingIndex = index; return; }
+    busy = true;
+    const spot = spots[index];
+    const hostEl = spot.el;
+    const isFirst = currentIndex === -1;
+    currentIndex = index;
+
+    if (isFirst){
+      // First appearance: fade in directly tucked into the spot, no cross-page run.
+      hostEl.style.position = getComputedStyle(hostEl).position === 'static' ? 'relative' : hostEl.style.position;
+      ws.style.transition = 'none';
+      hostEl.appendChild(ws);
+      ws.style.position = 'absolute';
+      if (spot.corner === 'orbit'){
+        const hostCard = hostEl.closest('.form-card') || hostEl.parentElement;
+        ws.style.left = '-60px'; ws.style.top = '-60px';
+        hostCard.appendChild(ws); ws.style.position = 'absolute';
+        void ws.offsetWidth;
+        ws.classList.add('visible');
+        runOrbit(hostEl, hostCard);
+        return;
+      }
+      placeInHost(hostEl, spot.corner);
+      void ws.offsetWidth;
+      ws.style.transition = 'opacity .5s ease';
+      ws.classList.add('visible', 'idle');
+      busy = false;
+      flushPending();
+      return;
+    }
+
+    // Run phase: lift squirrel to fixed positioning and dash to the new spot.
+    const fromRect = ws.getBoundingClientRect();
+    document.body.appendChild(ws);
+    ws.style.transition = 'none';
+    ws.style.position = 'fixed';
+    ws.style.left = fromRect.left + 'px';
+    ws.style.top = fromRect.top + 'px';
+    ws.classList.remove('idle');
+    void ws.offsetWidth;
+    ws.style.transition = 'left .6s cubic-bezier(.33,1.05,.6,1), top .6s cubic-bezier(.33,1.05,.6,1)';
+    ws.classList.add('visible', 'running');
+
+    const hostRect = hostEl.getBoundingClientRect();
+    const target = cornerViewportPoint(hostRect, spot.corner === 'orbit' ? 'top-left' : spot.corner);
+    ws.classList.toggle('face-left', target.faceLeft);
+    requestAnimationFrame(() => {
+      ws.style.left = target.x + 'px';
+      ws.style.top = target.y + 'px';
+    });
+
+    await sleep(640);
+    ws.classList.remove('running');
+
+    if (spot.corner === 'orbit'){
+      const hostCard = hostEl.closest('.form-card') || hostEl.parentElement;
+      ws.style.transition = 'none';
+      ws.style.position = 'absolute';
+      hostCard.appendChild(ws);
+      runOrbit(hostEl, hostCard);
+      return;
+    }
+
+    ws.style.transition = 'none';
+    ws.style.position = 'absolute';
+    hostEl.appendChild(ws);
+    placeInHost(hostEl, spot.corner);
+    void ws.offsetWidth;
+    ws.style.transition = 'opacity .3s ease';
+    ws.classList.add('idle');
+    busy = false;
+    flushPending();
+  }
+
+  const wsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const idx = spots.findIndex(s => s.el === entry.target);
+        if (idx !== -1) moveTo(idx);
+      }
+    });
+  }, { root: null, rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+
+  spots.forEach(spot => wsObserver.observe(spot.el));
+})();
 </script>
 
 </body>

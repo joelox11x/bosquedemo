@@ -453,7 +453,7 @@ section{padding:clamp(70px,10vw,120px) 0;}
   width:44px; height:44px; border-radius:50%; background:var(--pine-950); color:var(--white);
   display:flex; align-items:center; justify-content:center; flex:none; font-size:1.15rem;
 }
-.form-card{ background:var(--white); padding:42px; box-shadow:var(--shadow-soft); border-radius:4px; }
+.form-card{ position:relative; background:var(--white); padding:42px; box-shadow:var(--shadow-soft); border-radius:4px; }
 .field{margin-bottom:24px;}
 .field label{display:block; font-size:0.84rem; font-weight:700; color:var(--pine-900); margin-bottom:9px;}
 .field input, .field select, .field textarea{
@@ -463,9 +463,44 @@ section{padding:clamp(70px,10vw,120px) 0;}
 }
 .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--gold-500); }
 .field textarea{resize:vertical; min-height:90px;}
-.form-submit{width:100%; justify-content:center; background:var(--pine-950); color:var(--white); border:none; padding:17px; font-size:1rem;}
+.form-submit{width:100%; justify-content:center; background:var(--pine-950); color:var(--white); border:none; padding:17px; font-size:1rem; position:relative;}
 .form-submit:hover{background:var(--pine-800);}
 .form-note{font-size:0.8rem; color:#8b8271; margin-top:16px;}
+
+/* ---- Pointing squirrel: nudges the WhatsApp button ---- */
+.point-squirrel{
+  position:absolute; width:56px; height:50px; z-index:6;
+  pointer-events:none; opacity:0; transition:opacity .5s ease;
+}
+.point-squirrel.visible{opacity:1;}
+.point-squirrel .ps-rig{
+  width:100%; height:100%; transform-origin:78% 92%;
+  animation:psNudge 1.9s ease-in-out infinite;
+  filter:drop-shadow(0 6px 8px rgba(0,0,0,0.3));
+}
+.point-squirrel svg{width:100%; height:100%; display:block;}
+.point-squirrel .ps-arrow{
+  position:absolute; right:-6px; bottom:-4px;
+  width:16px; height:16px;
+  animation:psArrow 1.9s ease-in-out infinite;
+}
+@keyframes psNudge{
+  0%, 100% { transform:rotate(0deg) translateY(0); }
+  35%      { transform:rotate(-10deg) translateY(2px); }
+  55%      { transform:rotate(0deg) translateY(0); }
+}
+@keyframes psArrow{
+  0%, 100% { transform:translateY(0); opacity:0.55; }
+  50%      { transform:translateY(5px); opacity:1; }
+}
+.form-submit.nudge-glow{animation:psGlow 1.9s ease-in-out infinite;}
+@keyframes psGlow{
+  0%, 100% { box-shadow:0 0 0 0 rgba(195,155,66,0); }
+  55%      { box-shadow:0 0 0 6px rgba(195,155,66,0.28); }
+}
+@media(prefers-reduced-motion: reduce){
+  .point-squirrel .ps-rig, .point-squirrel .ps-arrow, .form-submit.nudge-glow{animation:none !important;}
+}
 
 /* ---- Footer ---- */
 footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 30px;}
@@ -793,7 +828,56 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
           <label for="fmsg">Mensaje (opcional)</label>
           <textarea id="fmsg" placeholder="Cuéntanos qué te gustaría saber"></textarea>
         </div>
-        <button type="submit" class="btn form-submit">Enviar por WhatsApp</button>
+        <div style="position:relative;">
+          <button type="submit" class="btn form-submit" id="waSubmitBtn">Enviar por WhatsApp</button>
+          <div class="point-squirrel" id="pointSquirrel" aria-hidden="true">
+            <div class="ps-rig">
+              <svg viewBox="-4 0 100 92" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="pBody" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6e4527"/>
+                    <stop offset="55%" stop-color="#9c6a3c"/>
+                    <stop offset="100%" stop-color="#d1a877"/>
+                  </linearGradient>
+                  <linearGradient id="pTail" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#4c2f1a"/>
+                    <stop offset="45%" stop-color="#7a4f2c"/>
+                    <stop offset="100%" stop-color="#c99a63"/>
+                  </linearGradient>
+                  <radialGradient id="pEye" cx="35%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#4a3322"/>
+                    <stop offset="100%" stop-color="#140d07"/>
+                  </radialGradient>
+                </defs>
+                <path d="M46 60 C34 55 26 42 30 29 C33 19 43 13 53 16 C48 19 45 25 46 31 C54 28 61 33 61 41 C68 40 74 45 73 53 C82 51 89 58 86 67 C84 74 75 77 68 73 C66 79 57 81 51 77 C46 81 38 79 36 72 C41 74 45 70 45 65 C45 63 45 61 46 60 Z" fill="url(#pTail)"/>
+                <path d="M55 17 L59 12 L60 18 Z" fill="#4c2f1a"/>
+                <path d="M63 42 L68 39 L68 45 Z" fill="#4c2f1a"/>
+                <path d="M75 54 L80 52 L79 58 Z" fill="#4c2f1a"/>
+                <path d="M87 68 L91 68 L89 73 Z" fill="#4c2f1a"/>
+                <path d="M42 76 C40 82 34 86 28 84 C32 81 34 76 33 71 C37 71 40 73 42 76 Z" fill="#4c2f1a"/>
+                <ellipse cx="34" cy="64" rx="19" ry="15" fill="url(#pBody)"/>
+                <path d="M19 64 C19 71 26 77 34 76 C29 74 25 69 26 63 C22 62 19 62 19 64 Z" fill="#f2e6cf"/>
+                <path d="M24 68 C21 74 15 78 9 76 C13 73 15 68 14 63 C18 63 22 65 24 68 Z" fill="#7a4f2c"/>
+                <path d="M11 75.5 L9 77.5 M13.5 76.5 L12 78.8 M16 76.5 L15 79" stroke="#4c2f1a" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+                <circle cx="19" cy="50" r="12.5" fill="url(#pBody)"/>
+                <path d="M9 49 C9 45.5 11.8 43 15.2 43.6 C13.5 45.6 13 48 14.3 50.6 C11.2 51 9 50.6 9 49 Z" fill="#f2e6cf"/>
+                <path d="M12.5 41 C12.5 36.5 17 34 20.5 36.5 C18.7 39 17.7 42 17.9 45 C14.8 44.8 12.5 43.3 12.5 41 Z" fill="#4c2f1a"/>
+                <path d="M14.8 40.6 C14.8 38.3 17 37 18.8 38.4 C17.7 39.8 17.2 41.4 17.5 42.9 C15.8 42.6 14.8 41.8 14.8 40.6 Z" fill="#e9c9a0"/>
+                <path d="M19.6 36.2 L21.2 34.2 L21.4 36.6 Z" fill="#4c2f1a"/>
+                <circle cx="14.6" cy="48" r="2.9" fill="url(#pEye)"/>
+                <circle cx="13.6" cy="46.8" r="0.9" fill="#fff"/>
+                <circle cx="15.6" cy="49.1" r="0.4" fill="#f5ead6" opacity="0.85"/>
+                <circle cx="8" cy="52.5" r="1.3" fill="#2c1810"/>
+                <circle cx="7.6" cy="52" r="0.35" fill="#fff" opacity="0.7"/>
+                <path d="M8 51 C4 50 1 49.5 -3 50" stroke="#f2e6cf" stroke-width="0.5" fill="none" opacity="0.8"/>
+                <path d="M8.5 53 C4.5 53.5 1.5 54 -2 55" stroke="#f2e6cf" stroke-width="0.5" fill="none" opacity="0.8"/>
+              </svg>
+            </div>
+            <svg class="ps-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3v14M12 17l-6-6M12 17l6-6" stroke="#c39b42" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
         <p class="form-note">Al enviar, se abrirá WhatsApp con tu mensaje listo para confirmar el envío.</p>
       </form>
     </div>
@@ -1012,6 +1096,32 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
   const url = `https://wa.me/523411363292?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
 });
+
+// Pointing squirrel: nudges the WhatsApp submit button once it's on screen
+(function initPointSquirrel(){
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ps = document.getElementById('pointSquirrel');
+  const waBtn = document.getElementById('waSubmitBtn');
+  if (!ps || !waBtn) return;
+
+  function placePointSquirrel(){
+    const btnW = waBtn.offsetWidth;
+    ps.style.left = (btnW - 20) + 'px';
+    ps.style.top = '-34px';
+  }
+  placePointSquirrel();
+  window.addEventListener('resize', placePointSquirrel);
+
+  if (reduceMotion) return;
+
+  const psObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      ps.classList.toggle('visible', entry.isIntersecting);
+      waBtn.classList.toggle('nudge-glow', entry.isIntersecting);
+    });
+  }, { threshold: 0.6 });
+  psObserver.observe(waBtn);
+})();
 </script>
 
 </body>

@@ -315,7 +315,17 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .about-media .tag-card span{font-size:0.85rem; color:rgba(255,253,248,0.8);}
 
 /* ---- Gallery masonry ---- */
-.gallery{background:var(--pine-950); color:var(--white);}
+#bosque{
+  background-color:var(--sand-50);
+  background-image: radial-gradient(rgba(34,27,18,0.05) 1px, transparent 1px);
+  background-size:26px 26px;
+}
+.gallery{
+  background-color:var(--pine-950); color:var(--white);
+  background-image:
+    repeating-radial-gradient(circle at 82% 8%, transparent 0, transparent 34px, rgba(255,253,248,0.035) 35px, rgba(255,253,248,0.035) 36px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
 .gallery .section-head h2, .gallery .section-head p{color:var(--white);}
 .gallery .section-head p{color:rgba(255,253,248,0.68);}
 .gallery .eyebrow-line{color:var(--gold-300);}
@@ -344,7 +354,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .masonry figure:hover figcaption{opacity:1; transform:translateY(0);}
 
 /* ---- Investment models ---- */
-.models{background:var(--sand-100);}
+.models{
+  background-color:var(--sand-100);
+  background-image: repeating-radial-gradient(circle at 12% 18%, transparent 0, transparent 40px, rgba(53,107,72,0.028) 41px, rgba(53,107,72,0.028) 42px);
+}
 .model-grid{display:grid; grid-template-columns:1fr; gap:30px;}
 @media(min-width:880px){.model-grid{grid-template-columns:1fr 1fr;}}
 .model-card{
@@ -375,6 +388,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .model-body .btn{margin-bottom:38px;}
 
 /* ---- Progress split ---- */
+.progress-sec{
+  background-color:var(--sand-50);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
 .progress-sec .wrap{display:grid; grid-template-columns:1fr; gap:60px; align-items:center;}
 @media(min-width:900px){.progress-sec .wrap{grid-template-columns:1fr 1fr;}}
 .progress-media{ position:relative; border-radius:4px; overflow:hidden; box-shadow:var(--shadow-soft); aspect-ratio:4/3;}
@@ -399,7 +416,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .route-media:hover img{transform:scale(1.03);}
 
 /* ---- Route / location ---- */
-.location{background:var(--pine-900); color:var(--white);}
+.location{
+  background-color:var(--pine-900); color:var(--white);
+  background-image: repeating-radial-gradient(circle at 88% 85%, transparent 0, transparent 28px, rgba(219,184,104,0.05) 29px, rgba(219,184,104,0.05) 30px);
+}
 .location .section-head h2, .location .section-head p{color:var(--white);}
 .location .section-head p{color:rgba(255,253,248,0.7);}
 .location .eyebrow-line{color:var(--gold-300);}
@@ -421,7 +441,11 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .route-fact span{font-size:0.85rem; color:rgba(255,253,248,0.62);}
 
 /* ---- Video section ---- */
-.video-sec{ background:var(--sand-50); }
+.video-sec{
+  background-color:var(--sand-50);
+  background-image: radial-gradient(rgba(34,27,18,0.055) 1px, transparent 1px);
+  background-size:26px 26px;
+}
 .video-frame{
   position:relative; max-width:920px; margin:0 auto; border-radius:6px; overflow:hidden;
   box-shadow:var(--shadow-lift); aspect-ratio:16/9; background:var(--pine-950);
@@ -442,7 +466,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .video-caption{text-align:center; margin-top:22px; color:var(--ink-soft); font-size:0.92rem;}
 
 /* ---- Contact ---- */
-.contact{background:var(--sand-100);}
+.contact{
+  background-color:var(--sand-100);
+  background-image: repeating-radial-gradient(circle at 90% 15%, transparent 0, transparent 40px, rgba(53,107,72,0.028) 41px, rgba(53,107,72,0.028) 42px);
+}
 .contact-grid{display:grid; grid-template-columns:1fr; gap:54px;}
 @media(min-width:900px){.contact-grid{grid-template-columns:0.9fr 1.1fr;}}
 .contact-copy h2{font-size:clamp(1.9rem,3.2vw,2.6rem);}
@@ -470,7 +497,7 @@ section{padding:clamp(70px,10vw,120px) 0;}
   padding-right:26px; cursor:pointer; border-radius:0;
 }
 .field select:focus{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23173324' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='5 7.5 10 12.5 15 7.5'/%3E%3C/svg%3E"); }
-.submit-wrap{position:relative;}
+.submit-wrap, .squirrel-cta{position:relative; display:inline-flex;}
 .form-submit{width:100%; justify-content:center; background:var(--pine-950); color:var(--white); border:none; padding:17px; font-size:1rem;}
 .form-submit:hover{background:var(--pine-800);}
 .form-note{font-size:0.8rem; color:#8b8271; margin-top:16px;}
@@ -483,7 +510,8 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .squirrel-static .squirrel-flip{width:100%; height:100%;}
 .squirrel-static .squirrel-squash{width:100%; height:100%; transform-origin:50% 100%; animation:squirrelIdle 1.7s ease-in-out infinite;}
 .squirrel-static svg{width:100%; height:100%; display:block;}
-.submit-wrap .squirrel-static{ top:-15px; right:14px; transform:rotate(-6deg); }
+.submit-wrap .squirrel-static, .squirrel-cta .squirrel-static{ top:-15px; right:10px; transform:rotate(-6deg); }
+.squirrel-cta .squirrel-static{ width:26px; height:26px; }
 .float-wa{ overflow:visible; }
 .float-wa .squirrel-static{ width:24px; height:24px; top:-8px; left:-6px; transform:scaleX(-1) rotate(8deg); opacity:0.96; transition:opacity .3s ease; }
 .float-wa:hover .squirrel-static{ opacity:0; }
@@ -495,7 +523,10 @@ section{padding:clamp(70px,10vw,120px) 0;}
 }
 
 /* ---- Footer ---- */
-footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 30px;}
+footer{
+  background-color:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 30px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
 .footer-top{display:flex; flex-wrap:wrap; justify-content:space-between; gap:32px; padding-bottom:36px; border-bottom:1px solid rgba(255,253,248,0.12);}
 .footer-brand{display:flex; align-items:center; gap:12px;}
 .footer-brand img{height:40px; border-radius:6px;}
@@ -602,7 +633,31 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
     <p class="lede">11 lotes exclusivos dentro de un bosque de pinos, encinos y fresnos. Acceso controlado, escrituración inmediata y financiamiento directo a 60 meses sin intereses.</p>
     <div class="hero-actions">
       <a href="#lotes" class="btn btn-gold">Ver los 11 lotes</a>
-      <a href="https://wa.me/523411363292" target="_blank" rel="noopener" class="btn btn-outline-light">Hablar por WhatsApp</a>
+      <span class="squirrel-cta">
+          <div class="squirrel-static" aria-hidden="true">
+            <div class="squirrel-flip">
+              <div class="squirrel-squash">
+                <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
+                  <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
+                  <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
+                  <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
+                  <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
+                  <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
+                  <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
+                  <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
+                  <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
+                  <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
+                  <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
+                  <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
+                  <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
+                  <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/523411363292" target="_blank" rel="noopener" class="btn btn-outline-light">Hablar por WhatsApp</a>
+        </span>
     </div>
   </div>
   <div class="hero-dots" id="heroDots">
@@ -681,7 +736,31 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
             <li><span class="dot"></span>Acceso controlado y exclusivo</li>
             <li><span class="dot"></span>Ideal para construir tu propia cabaña</li>
           </ul>
+          <span class="squirrel-cta">
+          <div class="squirrel-static" aria-hidden="true">
+            <div class="squirrel-flip">
+              <div class="squirrel-squash">
+                <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
+                  <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
+                  <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
+                  <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
+                  <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
+                  <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
+                  <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
+                  <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
+                  <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
+                  <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
+                  <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
+                  <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
+                  <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
+                  <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
+                </svg>
+              </div>
+            </div>
+          </div>
           <a href="https://wa.me/523411363292" target="_blank" rel="noopener" class="btn btn-outline-dark">Preguntar por un lote</a>
+        </span>
         </div>
       </div>
       <div class="model-card featured reveal">
@@ -700,7 +779,31 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
             <li><span class="dot"></span>Servicios ecológicos y sustentables incluidos</li>
             <li><span class="dot"></span>Menor inversión de entrada que un lote completo</li>
           </ul>
+          <span class="squirrel-cta">
+          <div class="squirrel-static" aria-hidden="true">
+            <div class="squirrel-flip">
+              <div class="squirrel-squash">
+                <svg viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="58" cy="88" rx="22" ry="5" fill="#000" opacity="0.001"/>
+                  <path d="M45 62 C30 58 20 44 26 28 C30 17 42 10 54 13 C48 16 44 22 45 29 C55 26 63 32 63 41 C71 40 78 46 77 55 C88 52 96 60 92 70 C89 78 78 80 71 75 C68 82 58 84 52 79 C46 84 36 82 34 74 C40 76 45 71 45 65 C45 64 45 63 45 62 Z" fill="#5c3a20"/>
+                  <path d="M50 24 C58 24 64 30 63 38 C68 39 72 43 73 48 C66 44 58 43 52 46 C48 41 47 34 50 28 Z" fill="#8a5a34"/>
+                  <ellipse cx="34" cy="66" rx="20" ry="16" fill="#8a5a34"/>
+                  <path d="M18 66 C18 74 26 80 35 79 C29 77 25 71 26 65 C21 64 18 64 18 66 Z" fill="#f2e6cf"/>
+                  <circle cx="19" cy="52" r="13" fill="#8a5a34"/>
+                  <path d="M12 42 C12 37 17 34 21 37 C19 40 18 44 19 47 C15 47 12 45 12 42 Z" fill="#6b4326"/>
+                  <path d="M14.5 41.5 C14.5 39 17 37.5 19 39 C17.8 40.5 17.3 42.2 17.6 43.8 C15.7 43.5 14.5 42.8 14.5 41.5 Z" fill="#e9c9a0"/>
+                  <path d="M10 55 C10 51 13 48 17 49 C15 51 14.5 54 16 57 C12.5 57.5 10 57 10 55 Z" fill="#f2e6cf"/>
+                  <circle cx="14.5" cy="50" r="2.6" fill="#241a10"/>
+                  <circle cx="13.7" cy="49.1" r="0.8" fill="#fff"/>
+                  <circle cx="8.5" cy="54.5" r="1.1" fill="#3a2415"/>
+                  <path d="M27 70 C24 76 18 80 12 79 C16 76 18 71 17 66 C21 66 25 67 27 70 Z" fill="#6b4326"/>
+                  <path d="M46 76 C44 82 38 86 32 84 C36 81 38 76 37 71 C41 71 44 73 46 76 Z" fill="#6b4326"/>
+                </svg>
+              </div>
+            </div>
+          </div>
           <a href="https://wa.me/523411363292" target="_blank" rel="noopener" class="btn btn-gold">Conocer los tickets disponibles</a>
+        </span>
         </div>
       </div>
     </div>

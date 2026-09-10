@@ -431,6 +431,22 @@ section{padding:clamp(70px,10vw,120px) 0;}
 .route-step h4{font-family:'Karla',sans-serif; font-weight:700; margin-bottom:6px; color:var(--white);}
 .route-step p{color:rgba(255,253,248,0.66); font-size:0.94rem;}
 .route-facts{display:flex; gap:26px; margin-top:32px; flex-wrap:wrap; justify-content:center;}
+
+.map-embed{
+  margin-top:48px; border-radius:6px; overflow:hidden;
+  box-shadow:var(--shadow-lift); border:1px solid rgba(255,253,248,0.12);
+}
+.map-embed iframe{display:block; width:100%; height:420px; border:0;}
+.map-heading{margin-top:48px; text-align:center;}
+.map-heading h3{font-size:clamp(1.3rem,2.2vw,1.7rem); color:var(--white);}
+.map-heading p{color:rgba(255,253,248,0.7); margin-top:10px;}
+.map-link{
+  display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+  color:var(--gold-300); font-weight:700; font-size:0.9rem;
+  border-bottom:1.5px solid var(--gold-300); padding-bottom:2px;
+  transition:opacity .3s var(--ease);
+}
+.map-link:hover{opacity:0.75;}
 .route-fact{text-align:center;}
 .route-fact strong{display:block; font-family:'Fraunces',serif; font-size:1.7rem; color:var(--gold-400);}
 .route-fact span{font-size:0.85rem; color:rgba(255,253,248,0.62);}
@@ -782,6 +798,21 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
           <div class="route-fact"><strong>~120 km</strong><span>Distancia aproximada</span></div>
         </div>
       </div>
+    </div>
+    <div class="map-heading reveal">
+      <div class="eyebrow-line">Encuéntranos</div>
+      <h3>Así llegamos en el mapa</h3>
+      <p>Explora el punto exacto y traza tu propia ruta con un clic.</p>
+      <a class="map-link" href="https://maps.app.goo.gl/dszs2gPgU1aspTHc6" target="_blank" rel="noopener">Abrir en Google Maps ↗</a>
+    </div>
+    <div class="map-embed reveal">
+      <iframe
+        src="https://www.google.com/maps?q=Bosque+Pe%C3%B1a+Alta+Tapalpa,+49340+Tapalpa,+Jal.&ftid=0x84259bfd4f648edb:0x9a8243419c0f11bb&output=embed"
+        allowfullscreen
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Ubicación de Bosque Peña Alta en Google Maps">
+      </iframe>
     </div>
   </div>
 </section>

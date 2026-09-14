@@ -556,13 +556,14 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
 .dot-vendido{ background:#c0554a; }
 .dot-comun{ background:#7ea3b0; }
 .map-lotes-frame{
-  display:grid; grid-template-columns: 1fr 320px; gap:0;
+  display:grid; grid-template-columns: 1fr 320px; gap:0; align-items:stretch;
   border-radius:20px; overflow:hidden; box-shadow:var(--shadow-lift);
   border:1px solid rgba(255,253,248,0.12);
 }
-#lotesMap{ width:100%; height:520px; background:#12241a; }
+#lotesMap{ width:100%; height:100%; min-height:520px; background:#12241a; }
 .map-lotes-panel{
   background:var(--sand-50); padding:26px 24px; display:flex; flex-direction:column; justify-content:flex-start;
+  max-height:720px; overflow-y:auto;
 }
 .map-lotes-panel-empty p{ color:var(--ink-soft); font-size:0.94rem; }
 .panel-status{
@@ -579,10 +580,148 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
 .map-lotes-panel .btn{ width:100%; justify-content:center; text-align:center; }
 .map-lotes-note{ margin-top:16px; font-size:0.78rem; color:var(--sand-300); opacity:0.75; }
 .leaflet-popup-content-wrapper{ border-radius:12px; font-family:'Karla',sans-serif; }
+
+/* Galería de medios dentro del panel */
+.panel-media{ margin-bottom:18px; }
+.panel-media-label{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:8px; font-weight:600; }
+.panel-media-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.media-thumb{
+  position:relative; aspect-ratio:1/1; border-radius:8px; overflow:hidden; cursor:pointer;
+  border:none; padding:0; background:#dcd6c8; transition:transform .18s ease, box-shadow .18s ease;
+}
+.media-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.media-thumb:hover{ transform:scale(1.04); box-shadow:0 4px 14px rgba(0,0,0,.22); }
+.media-thumb.is-video::after{
+  content:''; position:absolute; inset:0; background:rgba(16,32,22,.42);
+}
+.media-thumb.is-video::before{
+  content:''; position:absolute; top:50%; left:50%; z-index:2;
+  transform:translate(-50%,-50%); width:0; height:0;
+  border-left:13px solid #fffdf8; border-top:9px solid transparent; border-bottom:9px solid transparent;
+}
+.media-more{
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces',serif; font-size:0.95rem; color:var(--pine-800); background:#e9e3d6;
+}
+.panel-nomedia{ font-size:0.84rem; color:var(--ink-soft); font-style:italic; margin-bottom:16px; }
+
+/* Badge de cámara sobre polígonos con fotos */
+.lote-badge{ background:none; border:none; }
+.lote-badge-inner{
+  display:flex; align-items:center; gap:4px; background:rgba(16,32,22,.82); color:#fffdf8;
+  font-family:'Karla',sans-serif; font-size:0.66rem; font-weight:700; padding:3px 7px; border-radius:99px;
+  white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+
+/* Lightbox */
+.lb-overlay{
+  position:fixed; inset:0; z-index:9999; background:rgba(10,20,14,.94);
+  display:none; align-items:center; justify-content:center; padding:24px;
+}
+.lb-overlay.is-open{ display:flex; }
+.lb-stage{ max-width:min(1100px,94vw); max-height:86vh; display:flex; align-items:center; justify-content:center; }
+.lb-stage img, .lb-stage video{ max-width:100%; max-height:86vh; border-radius:10px; display:block; }
+.lb-btn{
+  position:absolute; background:rgba(255,253,248,.14); color:#fffdf8; border:none; cursor:pointer;
+  width:46px; height:46px; border-radius:50%; font-size:1.4rem; line-height:1;
+  display:flex; align-items:center; justify-content:center; transition:background .18s ease;
+}
+.lb-btn:hover{ background:rgba(255,253,248,.3); }
+.lb-prev{ left:20px; top:50%; transform:translateY(-50%); }
+.lb-next{ right:20px; top:50%; transform:translateY(-50%); }
+.lb-close{ top:20px; right:20px; }
+.lb-caption{
+  position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+  color:var(--sand-200); font-size:0.84rem; letter-spacing:0.03em;
+}
 @media (max-width: 860px){
   .map-lotes-frame{ grid-template-columns: 1fr; }
   #lotesMap{ height:380px; }
+  .lb-prev{ left:6px; } .lb-next{ right:6px; }
 }
+
+/* Botón "Ver el fraccionamiento" */
+.tour-btn{
+  margin-left:auto; display:inline-flex; align-items:center; gap:8px;
+  background:var(--gold-400); color:var(--pine-950); border:none; cursor:pointer;
+  font-family:'Karla',sans-serif; font-weight:700; font-size:0.82rem; letter-spacing:0.02em;
+  padding:8px 16px; border-radius:99px; transition:transform .15s ease, background .15s ease;
+}
+.tour-btn:hover{ background:var(--gold-300); transform:translateY(-1px); }
+.tour-btn.is-active{ background:#c0554a; color:#fffdf8; }
+.tour-btn-icon{ font-size:0.65rem; }
+
+/* Hero de video/foto dentro del panel */
+.panel-hero{
+  position:relative; width:100%; aspect-ratio:16/10; border-radius:12px; overflow:hidden;
+  margin-bottom:16px; background:#12241a;
+}
+.panel-hero video, .panel-hero img{ width:100%; height:100%; object-fit:cover; display:block; }
+.panel-hero-tag{
+  position:absolute; bottom:10px; left:10px; background:rgba(16,32,22,.72); color:#fffdf8;
+  font-family:'Karla',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.04em;
+  padding:4px 10px; border-radius:99px;
+}
+.panel-ficha-link{
+  display:inline-block; text-align:center; width:100%; margin-top:10px; padding:11px;
+  border-radius:99px; border:1.5px solid var(--pine-700); color:var(--pine-800);
+  font-family:'Karla',sans-serif; font-weight:700; font-size:0.86rem; cursor:pointer; background:none;
+  transition:background .15s ease, color .15s ease;
+}
+.panel-ficha-link:hover{ background:var(--pine-800); color:#fffdf8; }
+
+/* Ficha completa (modal tipo Airbnb) */
+.ficha-overlay{
+  position:fixed; inset:0; z-index:9998; background:rgba(10,20,14,.92);
+  display:none; align-items:center; justify-content:center; padding:28px;
+}
+.ficha-overlay.is-open{ display:flex; }
+.ficha-box{
+  background:var(--sand-50); border-radius:18px; max-width:1040px; width:100%; max-height:88vh;
+  overflow:auto; display:grid; grid-template-columns: 1.3fr 1fr;
+}
+.ficha-media{ position:relative; background:#12241a; min-height:320px; }
+.ficha-media video, .ficha-media img{ width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; }
+.ficha-media-strip{ position:absolute; bottom:12px; left:12px; right:12px; display:flex; gap:6px; z-index:2; }
+.ficha-media-strip button{
+  flex:1; height:5px; border-radius:99px; border:none; background:rgba(255,253,248,.35); cursor:pointer; padding:0;
+}
+.ficha-media-strip button.is-active{ background:#fffdf8; }
+.ficha-nav{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+  background:rgba(16,32,22,.55); color:#fffdf8; border:none; cursor:pointer;
+  width:42px; height:42px; border-radius:50%; font-size:1.3rem; line-height:1;
+  display:flex; align-items:center; justify-content:center; transition:background .15s ease;
+}
+.ficha-nav:hover{ background:rgba(16,32,22,.8); }
+.ficha-nav.ficha-prev{ left:14px; }
+.ficha-nav.ficha-next{ right:14px; }
+.ficha-info{ padding:32px 30px; display:flex; flex-direction:column; }
+.ficha-info .eyebrow-line{ margin-bottom:10px; }
+.ficha-info h3{ font-size:1.9rem; margin-bottom:14px; }
+.ficha-specs{ display:grid; grid-template-columns:1fr 1fr; gap:14px 10px; margin-bottom:20px; }
+.ficha-spec-label{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:3px; }
+.ficha-spec-value{ font-family:'Fraunces',serif; font-size:1.05rem; color:var(--pine-800); }
+.ficha-info .btn{ width:100%; justify-content:center; text-align:center; margin-bottom:10px; }
+@media (max-width: 760px){
+  .ficha-box{ grid-template-columns:1fr; }
+  .ficha-media{ min-height:220px; }
+}
+
+/* Banner de recorrido guiado */
+.tour-banner{
+  position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(140%);
+  z-index:9997; background:var(--pine-950); color:#fffdf8; border-radius:99px;
+  padding:12px 12px 12px 22px; display:flex; align-items:center; gap:16px;
+  font-family:'Karla',sans-serif; font-size:0.86rem; box-shadow:0 8px 26px rgba(0,0,0,.35);
+  transition:transform .3s ease;
+}
+.tour-banner.is-open{ transform:translateX(-50%) translateY(0); }
+.tour-stop{
+  background:rgba(255,253,248,.14); color:#fffdf8; border:none; cursor:pointer;
+  font-family:'Karla',sans-serif; font-weight:700; font-size:0.78rem; padding:8px 14px; border-radius:99px;
+}
+.tour-stop:hover{ background:rgba(255,253,248,.28); }
 </style>
 </head>
 <body>
@@ -759,16 +898,18 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
 <section class="map-lotes-sec" id="mapa-lotes">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow-line">Explora en vivo</div>
+      <div class="eyebrow-line">Fase 1 — 11 lotes</div>
       <h2>Mapa interactivo de lotes</h2>
-      <p>Cada polígono corresponde al levantamiento real del fraccionamiento. Toca un lote para ver su superficie y disponibilidad, o pide informes directo por WhatsApp.</p>
+      <p>Cada polígono corresponde al plano oficial del fraccionamiento, con las medidas exactas del levantamiento firmado. Toca un lote para ver su superficie y disponibilidad, o pide informes directo por WhatsApp.</p>
     </div>
 
     <div class="map-legend reveal">
       <span class="legend-chip"><i class="dot dot-disponible"></i>Disponible</span>
       <span class="legend-chip"><i class="dot dot-apartado"></i>Apartado</span>
       <span class="legend-chip"><i class="dot dot-vendido"></i>Vendido</span>
-      <span class="legend-chip"><i class="dot dot-comun"></i>Área común / bosque</span>
+      <button class="tour-btn" id="tourBtn" type="button">
+        <span class="tour-btn-icon">&#9654;</span> Ver el fraccionamiento
+      </button>
     </div>
 
     <div class="map-lotes-frame reveal">
@@ -781,7 +922,25 @@ footer{background:var(--pine-950); color:rgba(255,253,248,0.72); padding:56px 0 
       </div>
     </div>
 
-    <p class="map-lotes-note">*Mapa de demostración generado a partir del levantamiento entregado. La disponibilidad mostrada es ilustrativa y debe confirmarse con el equipo comercial antes de publicarse.</p>
+    <p class="map-lotes-note">*Superficies tomadas del plano firmado por el Ing. Fernando Enríquez Ochoa (16/ago/2024). Todos los lotes se muestran como disponibles; la disponibilidad real (apartado/vendido) se actualizará conforme avance la comercialización. La numeración de los lotes 5, 6, 7 y 8, 9 se asignó por posición geográfica ya que comparten superficie idéntica en el plano — se recomienda confirmarla contra el documento oficial. Fase 2 (~60 lotes) se integrará cuando el proyecto esté listo.</p>
+  </div>
+
+  <div class="lb-overlay" id="lbOverlay" role="dialog" aria-modal="true" aria-label="Galería del lote">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Cerrar">&times;</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Anterior">&#8249;</button>
+    <div class="lb-stage" id="lbStage"></div>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Siguiente">&#8250;</button>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <div class="ficha-overlay" id="fichaOverlay" role="dialog" aria-modal="true" aria-label="Ficha completa del lote">
+    <button class="lb-btn lb-close" id="fichaClose" aria-label="Cerrar">&times;</button>
+    <div class="ficha-box" id="fichaBox"></div>
+  </div>
+
+  <div class="tour-banner" id="tourBanner">
+    <span id="tourBannerText">Recorriendo el fraccionamiento…</span>
+    <button class="tour-stop" id="tourStopBtn" type="button">Detener recorrido &#10005;</button>
   </div>
 </section>
 
@@ -1170,19 +1329,31 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
 <script>
 // ===== Mapa interactivo de lotes (datos derivados del KML del levantamiento) =====
 (function(){
-  const LOTES_DATA = {"center": [19.9475523, -103.7489733], "lots": [{"code": "A13", "type": "lote", "status": "disponible", "area": 2515, "coords": [[19.9471444, -103.7500633], [19.9474514, -103.7498712], [19.9474729, -103.7498543], [19.9474906, -103.7498332], [19.9475421, -103.7498719], [19.9465441, -103.7507781], [19.9467704, -103.7500777], [19.9468948, -103.7501072], [19.9470223, -103.7501023], [19.9471444, -103.7500633]], "centroid": [19.9471477, -103.7500622]}, {"code": "A14", "type": "lote", "status": "disponible", "area": 1858, "coords": [[19.9477669, -103.7491689], [19.9479374, -103.7490366], [19.9479539, -103.7490215], [19.9479673, -103.7490032], [19.9479772, -103.7489826], [19.9480143, -103.7490052], [19.9475421, -103.7498719], [19.9474906, -103.7498332], [19.9475052, -103.749805], [19.947513, -103.7497741], [19.9475137, -103.749742], [19.947501, -103.7495519], [19.9474898, -103.749449], [19.9474882, -103.7494104], [19.9474948, -103.7493723], [19.9475092, -103.7493367], [19.9475307, -103.7493054], [19.9475583, -103.7492799], [19.9477669, -103.7491689]], "centroid": [19.947659, -103.7493747]}, {"code": "A15", "type": "lote", "status": "apartado", "area": 1667, "coords": [[19.9472521, -103.7485865], [19.9473048, -103.7486055], [19.9472832, -103.7487143], [19.9472676, -103.7487727], [19.9472631, -103.748833], [19.9472698, -103.7488932], [19.947349, -103.7491357], [19.9473656, -103.7492241], [19.9473732, -103.7492911], [19.947373, -103.7493059], [19.9473692, -103.7493203], [19.947362, -103.7493331], [19.947352, -103.7493435], [19.9473398, -103.7493509], [19.9472715, -103.7493678], [19.9472014, -103.7493702], [19.9470081, -103.749342], [19.9472521, -103.7485865]], "centroid": [19.9472921, -103.7490765]}, {"code": "A16", "type": "lote", "status": "disponible", "area": 1675, "coords": [[19.9471427, -103.7494195], [19.9471033, -103.7499988], [19.9470017, -103.7500283], [19.9468964, -103.7500305], [19.9467937, -103.7500054], [19.9469902, -103.7493972], [19.9471427, -103.7494195]], "centroid": [19.9470101, -103.749757]}, {"code": "A17", "type": "lote", "status": "disponible", "area": 1684, "coords": [[19.9473416, -103.7494105], [19.9473561, -103.7494082], [19.9473708, -103.7494096], [19.9473847, -103.7494147], [19.947397, -103.749423], [19.9474072, -103.7494343], [19.9474145, -103.7494477], [19.9474186, -103.7494626], [19.9474289, -103.7495573], [19.9474417, -103.7497486], [19.9474416, -103.749762], [19.9474386, -103.749775], [19.9474329, -103.749787], [19.9474248, -103.7497973], [19.9474147, -103.7498053], [19.9471113, -103.7499952], [19.9471033, -103.7499988], [19.9471427, -103.7494195], [19.9471958, -103.7494273], [19.9472694, -103.7494258], [19.9473416, -103.7494105]], "centroid": [19.9473466, -103.7495867]}, {"code": "A18", "type": "lote", "status": "apartado", "area": 1892, "coords": [[19.9478059, -103.748743], [19.9478268, -103.7487713], [19.9479229, -103.7489133], [19.9479281, -103.7489267], [19.94793, -103.748941], [19.9479286, -103.7489553], [19.9479238, -103.7489689], [19.947916, -103.7489807], [19.9479057, -103.7489902], [19.9477385, -103.7491198], [19.9475, -103.7492467], [19.9474869, -103.7492511], [19.9474732, -103.7492522], [19.9474596, -103.7492499], [19.9474469, -103.7492443], [19.9474358, -103.7492358], [19.9474269, -103.7492247], [19.9474207, -103.7492118], [19.9474175, -103.7491977], [19.9474005, -103.7491176], [19.9473529, -103.7489721], [19.9478059, -103.748743]], "centroid": [19.947657, -103.7490571]}, {"code": "A19", "type": "lote", "status": "disponible", "area": 1893, "coords": [[19.9475426, -103.7484357], [19.9475775, -103.7484517], [19.9476078, -103.7484762], [19.9476316, -103.7485077], [19.9478059, -103.748743], [19.9473529, -103.7489721], [19.9473221, -103.7488779], [19.9473173, -103.7488292], [19.9473214, -103.7487804], [19.9473343, -103.7487334], [19.9473586, -103.7486125], [19.9473613, -103.748489], [19.9473612, -103.7484764], [19.9473637, -103.748464], [19.9473689, -103.7484526], [19.9473813, -103.7484368], [19.947397, -103.7484246], [19.947415, -103.7484169], [19.9474343, -103.748414], [19.9475426, -103.7484357]], "centroid": [19.9474399, -103.7485715]}, {"code": "A1B", "type": "lote", "status": "disponible", "area": 2109, "coords": [[19.9477418, -103.7478632], [19.9480257, -103.7480949], [19.9477582, -103.7485857], [19.947676, -103.7484747], [19.9476435, -103.7484329], [19.9476024, -103.7484006], [19.9475551, -103.7483798], [19.9475058, -103.74837], [19.9476187, -103.7481347], [19.9477418, -103.7478632]], "centroid": [19.9476869, -103.74826]}, {"code": "A1C", "type": "lote", "status": "disponible", "area": 2106, "coords": [[19.9480257, -103.7480949], [19.9480686, -103.7481299], [19.9481714, -103.7481341], [19.9483939, -103.7479629], [19.9479267, -103.7488204], [19.9478702, -103.7487369], [19.9477582, -103.7485857], [19.9480257, -103.7480949]], "centroid": [19.94803, -103.74832]}, {"code": "A1D", "type": "lote", "status": "vendido", "area": 2107, "coords": [[19.9483939, -103.7479629], [19.9484645, -103.7479087], [19.9485605, -103.7480028], [19.9480143, -103.7490052], [19.9479772, -103.7489826], [19.9479841, -103.7489538], [19.9479841, -103.748924], [19.9479772, -103.7488951], [19.9479267, -103.7488204], [19.9483939, -103.7479629]], "centroid": [19.9481676, -103.7485418]}, {"code": "A1A", "type": "comun", "status": "comun", "area": 6400, "coords": [[19.9477102, -103.7471686], [19.9484645, -103.7479087], [19.9481714, -103.7481341], [19.9480686, -103.7481299], [19.9477418, -103.7478632], [19.9476187, -103.7481347], [19.9475058, -103.74837], [19.9474501, -103.7483588], [19.9473333, -103.7483354], [19.9477102, -103.7471686]], "centroid": [19.9477775, -103.7479572]}, {"code": "A1E", "type": "comun", "status": "comun", "area": 3785, "coords": [[19.9475, -103.7492467], [19.9477385, -103.7491198], [19.9479057, -103.7489902], [19.947916, -103.7489807], [19.9479238, -103.7489689], [19.9479286, -103.7489553], [19.94793, -103.748941], [19.9479281, -103.7489267], [19.9479229, -103.7489133], [19.9478268, -103.7487713], [19.9478059, -103.748743], [19.9476316, -103.7485077], [19.9476078, -103.7484762], [19.9475775, -103.7484517], [19.9475426, -103.7484357], [19.9474343, -103.748414], [19.947415, -103.7484169], [19.947397, -103.7484246], [19.9473813, -103.7484368], [19.9473689, -103.7484526], [19.9473637, -103.748464], [19.9473612, -103.7484764], [19.9473613, -103.748489], [19.9473586, -103.7486125], [19.9473343, -103.7487334], [19.9473214, -103.7487804], [19.9473173, -103.7488292], [19.9473221, -103.7488779], [19.9473529, -103.7489721], [19.9474005, -103.7491176], [19.9474174, -103.7491971], [19.9474205, -103.7492113], [19.9474267, -103.7492244], [19.9474356, -103.7492356], [19.9474467, -103.7492442], [19.9474594, -103.7492499], [19.9474731, -103.7492522], [19.9474868, -103.7492511], [19.9475, -103.7492467]], "centroid": [19.9475447, -103.7488471]}, {"code": "A1F", "type": "comun", "status": "comun", "area": 6911, "coords": [[19.9474501, -103.7483588], [19.9475058, -103.74837], [19.9475551, -103.7483798], [19.9476024, -103.7484006], [19.9476435, -103.7484329], [19.947676, -103.7484747], [19.9477582, -103.7485857], [19.9478702, -103.7487369], [19.9479267, -103.7488204], [19.9479772, -103.7488951], [19.9479841, -103.748924], [19.9479841, -103.7489538], [19.9479772, -103.7489826], [19.9479673, -103.7490032], [19.9479539, -103.7490215], [19.9479374, -103.7490366], [19.9477669, -103.7491689], [19.9475583, -103.7492799], [19.9475305, -103.7493056], [19.947509, -103.7493371], [19.9474946, -103.749373], [19.9474881, -103.7494114], [19.94749, -103.7494503], [19.947501, -103.7495519], [19.9475137, -103.749742], [19.9475132, -103.7497726], [19.9475062, -103.7498022], [19.9474931, -103.7498294], [19.9474745, -103.7498528], [19.9474514, -103.7498712], [19.9471444, -103.7500633], [19.9470223, -103.7501023], [19.9468948, -103.7501072], [19.9467704, -103.7500777], [19.9467937, -103.7500054], [19.9468964, -103.7500305], [19.9470017, -103.7500283], [19.9471033, -103.7499988], [19.9471113, -103.7499952], [19.9474147, -103.7498053], [19.9474248, -103.7497973], [19.9474329, -103.749787], [19.9474386, -103.749775], [19.9474416, -103.749762], [19.9474417, -103.7497486], [19.9474289, -103.7495573], [19.9474188, -103.7494637], [19.9474147, -103.7494482], [19.9474072, -103.7494343], [19.9473967, -103.7494228], [19.9473839, -103.7494143], [19.9473695, -103.7494094], [19.9473544, -103.7494083], [19.9473395, -103.7494112], [19.9472683, -103.749426], [19.9471958, -103.7494273], [19.9471427, -103.7494195], [19.9469902, -103.7493972], [19.9470081, -103.749342], [19.9472014, -103.7493702], [19.9472715, -103.7493678], [19.9473398, -103.7493509], [19.947352, -103.7493435], [19.947362, -103.7493331], [19.9473692, -103.7493203], [19.947373, -103.7493059], [19.9473732, -103.7492911], [19.9473724, -103.7492862], [19.9473658, -103.7492275], [19.947349, -103.7491357], [19.9472698, -103.7488932], [19.9472631, -103.748833], [19.9472676, -103.7487727], [19.9472832, -103.7487143], [19.9473048, -103.7486055], [19.9472521, -103.7485865], [19.9473333, -103.7483354], [19.9474501, -103.7483588]], "centroid": [19.9474188, -103.7493028]}]};
+  // Datos oficiales tomados del croquis firmado (Ing. Fernando Enríquez Ochoa, Ced. Prof. 1545104)
+  // Geometría exacta del levantamiento (KML), área = superficie oficial del cuadro de construcción de cada Fracción.
+  const LOTES_DATA = {"center": [19.9475523, -103.7489733], "lots": [{"lote": 1, "status": "disponible", "area": 2488.08, "coords": [[19.9471444, -103.7500633], [19.9474514, -103.7498712], [19.9474729, -103.7498543], [19.9474906, -103.7498332], [19.9475421, -103.7498719], [19.9465441, -103.7507781], [19.9467704, -103.7500777], [19.9468948, -103.7501072], [19.9470223, -103.7501023], [19.9471444, -103.7500633]], "centroid": [19.9470833, -103.7501856]}, {"lote": 2, "status": "disponible", "area": 1673.78, "coords": [[19.9471427, -103.7494195], [19.9471033, -103.7499988], [19.9470017, -103.7500283], [19.9468964, -103.7500305], [19.9467937, -103.7500054], [19.9469902, -103.7493972], [19.9471427, -103.7494195]], "centroid": [19.9469433, -103.7497859]}, {"lote": 3, "status": "disponible", "area": 1673.78, "coords": [[19.9473416, -103.7494105], [19.9473561, -103.7494082], [19.9473708, -103.7494096], [19.9473847, -103.7494147], [19.947397, -103.749423], [19.9474072, -103.7494343], [19.9474145, -103.7494477], [19.9474186, -103.7494626], [19.9474289, -103.7495573], [19.9474417, -103.7497486], [19.9474416, -103.749762], [19.9474386, -103.749775], [19.9474329, -103.749787], [19.9474248, -103.7497973], [19.9474147, -103.7498053], [19.9471113, -103.7499952], [19.9471033, -103.7499988], [19.9471427, -103.7494195], [19.9471958, -103.7494273], [19.9472694, -103.7494258], [19.9473416, -103.7494105]], "centroid": [19.9473055, -103.7496459]}, {"lote": 4, "status": "disponible", "area": 1847.66, "coords": [[19.9477669, -103.7491689], [19.9479374, -103.7490366], [19.9479539, -103.7490215], [19.9479673, -103.7490032], [19.9479772, -103.7489826], [19.9480143, -103.7490052], [19.9475421, -103.7498719], [19.9474906, -103.7498332], [19.9475052, -103.749805], [19.947513, -103.7497741], [19.9475137, -103.749742], [19.947501, -103.7495519], [19.9474898, -103.749449], [19.9474882, -103.7494104], [19.9474948, -103.7493723], [19.9475092, -103.7493367], [19.9475307, -103.7493054], [19.9475583, -103.7492799], [19.9477669, -103.7491689]], "centroid": [19.9476626, -103.7494376]}, {"lote": 5, "status": "disponible", "area": 2095.01, "coords": [[19.9483939, -103.7479629], [19.9484645, -103.7479087], [19.9485605, -103.7480028], [19.9480143, -103.7490052], [19.9479772, -103.7489826], [19.9479841, -103.7489538], [19.9479841, -103.748924], [19.9479772, -103.7488951], [19.9479267, -103.7488204], [19.9483939, -103.7479629]], "centroid": [19.9482041, -103.7484841]}, {"lote": 6, "status": "disponible", "area": 2095.01, "coords": [[19.9480257, -103.7480949], [19.9480686, -103.7481299], [19.9481714, -103.7481341], [19.9483939, -103.7479629], [19.9479267, -103.7488204], [19.9478702, -103.7487369], [19.9477582, -103.7485857], [19.9480257, -103.7480949]], "centroid": [19.94812, -103.7482988]}, {"lote": 7, "status": "disponible", "area": 2095.01, "coords": [[19.9477418, -103.7478632], [19.9480257, -103.7480949], [19.9477582, -103.7485857], [19.947676, -103.7484747], [19.9476435, -103.7484329], [19.9476024, -103.7484006], [19.9475551, -103.7483798], [19.9475058, -103.74837], [19.9476187, -103.7481347], [19.9477418, -103.7478632]], "centroid": [19.9478919, -103.748163]}, {"lote": 8, "status": "disponible", "area": 1880.35, "coords": [[19.9475426, -103.7484357], [19.9475775, -103.7484517], [19.9476078, -103.7484762], [19.9476316, -103.7485077], [19.9478059, -103.748743], [19.9473529, -103.7489721], [19.9473221, -103.7488779], [19.9473173, -103.7488292], [19.9473214, -103.7487804], [19.9473343, -103.7487334], [19.9473586, -103.7486125], [19.9473613, -103.748489], [19.9473612, -103.7484764], [19.9473637, -103.748464], [19.9473689, -103.7484526], [19.9473813, -103.7484368], [19.947397, -103.7484246], [19.947415, -103.7484169], [19.9474343, -103.748414], [19.9475426, -103.7484357]], "centroid": [19.94756, -103.7486555]}, {"lote": 9, "status": "disponible", "area": 1880.35, "coords": [[19.9478059, -103.748743], [19.9478268, -103.7487713], [19.9479229, -103.7489133], [19.9479281, -103.7489267], [19.94793, -103.748941], [19.9479286, -103.7489553], [19.9479238, -103.7489689], [19.947916, -103.7489807], [19.9479057, -103.7489902], [19.9477385, -103.7491198], [19.9475, -103.7492467], [19.9474869, -103.7492511], [19.9474732, -103.7492522], [19.9474596, -103.7492499], [19.9474469, -103.7492443], [19.9474358, -103.7492358], [19.9474269, -103.7492247], [19.9474207, -103.7492118], [19.9474175, -103.7491977], [19.9474005, -103.7491176], [19.9473529, -103.7489721], [19.9478059, -103.748743]], "centroid": [19.9476193, -103.7490103]}, {"lote": 10, "status": "disponible", "area": 1661.13, "coords": [[19.9472521, -103.7485865], [19.9473048, -103.7486055], [19.9472832, -103.7487143], [19.9472676, -103.7487727], [19.9472631, -103.748833], [19.9472698, -103.7488932], [19.947349, -103.7491357], [19.9473656, -103.7492241], [19.9473732, -103.7492911], [19.947373, -103.7493059], [19.9473692, -103.7493203], [19.947362, -103.7493331], [19.947352, -103.7493435], [19.9473398, -103.7493509], [19.9472715, -103.7493678], [19.9472014, -103.7493702], [19.9470081, -103.749342], [19.9472521, -103.7485865]], "centroid": [19.9471048, -103.7491994]}, {"lote": 11, "status": "disponible", "is_resto": true, "area": 6364.31, "coords": [[19.9477102, -103.7471686], [19.9484645, -103.7479087], [19.9481714, -103.7481341], [19.9480686, -103.7481299], [19.9477418, -103.7478632], [19.9476187, -103.7481347], [19.9475058, -103.74837], [19.9474501, -103.7483588], [19.9473333, -103.7483354], [19.9477102, -103.7471686]], "centroid": [19.9479052, -103.7476782]}]};
+
+  // Medios por lote. Para agregar otro lote basta con añadir su número aquí.
+  // type: 'image' | 'video'  |  poster: miniatura para los videos (opcional)
+  const LOTES_MEDIA = {
+    1: [
+      { type:'image', src:'https://arqfra-ai.com/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-14-at-1.31.02-AM-2.jpeg', caption:'Lote 1 — vista del terreno' },
+      { type:'image', src:'https://arqfra-ai.com/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-14-at-1.31.02-AM-3.jpeg', caption:'Lote 1 — vista hacia el poblado' },
+      { type:'video', src:'https://arqfra-ai.com/wp-content/uploads/2026/09/WhatsApp-Video-2026-09-14-at-1.33.58-AM.mp4',
+        poster:'https://arqfra-ai.com/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-14-at-1.31.02-AM-2.jpeg',
+        caption:'Lote 1 — recorrido aéreo' }
+    ]
+  };
 
   const STATUS_LABEL = {
     disponible: 'Disponible',
     apartado: 'Apartado',
-    vendido: 'Vendido',
-    comun: 'Área común / bosque'
+    vendido: 'Vendido'
   };
   const STATUS_COLOR = {
     disponible: '#4caf6f',
     apartado: '#c39b42',
-    vendido: '#c0554a',
-    comun: '#7ea3b0'
+    vendido: '#c0554a'
   };
   const WHATSAPP_NUMBER = '523411363292';
 
@@ -1200,43 +1371,280 @@ document.getElementById('leadForm').addEventListener('submit', function(e){
     map.on('focus', () => map.scrollWheelZoom.enable());
     map.on('blur', () => map.scrollWheelZoom.disable());
 
+    // Mantiene el mapa correctamente dimensionado si su alto cambia (por el contenido del panel, resize, etc.)
+    if (window.ResizeObserver){
+      new ResizeObserver(() => map.invalidateSize()).observe(mapEl);
+    }
+
     const panel = document.getElementById('lotesPanel');
+
+    // ---- Lightbox ----
+    const lb = {
+      overlay: document.getElementById('lbOverlay'),
+      stage: document.getElementById('lbStage'),
+      caption: document.getElementById('lbCaption'),
+      items: [], idx: 0
+    };
+
+    function lbShow(){
+      const item = lb.items[lb.idx];
+      if (!item) return;
+      lb.stage.innerHTML = item.type === 'video'
+        ? `<video src="${item.src}" controls autoplay playsinline ${item.poster ? `poster="${item.poster}"` : ''}></video>`
+        : `<img src="${item.src}" alt="${item.caption || ''}">`;
+      lb.caption.textContent = `${item.caption || ''}  ·  ${lb.idx + 1} / ${lb.items.length}`;
+    }
+    function lbOpen(items, idx){
+      lb.items = items; lb.idx = idx;
+      lb.overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      lbShow();
+    }
+    function lbClose(){
+      lb.overlay.classList.remove('is-open');
+      lb.stage.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+    function lbStep(dir){
+      if (!lb.items.length) return;
+      lb.idx = (lb.idx + dir + lb.items.length) % lb.items.length;
+      lbShow();
+    }
+    document.getElementById('lbClose').addEventListener('click', lbClose);
+    document.getElementById('lbPrev').addEventListener('click', () => lbStep(-1));
+    document.getElementById('lbNext').addEventListener('click', () => lbStep(1));
+    lb.overlay.addEventListener('click', e => { if (e.target === lb.overlay) lbClose(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') lbClose();
+      if (e.key === 'ArrowLeft') lbStep(-1);
+      if (e.key === 'ArrowRight') lbStep(1);
+    });
+
+    // ---- Panel ----
+    function heroHtml(lot, media){
+      const hero = media.find(m => m.type === 'video') || media[0];
+      if (!hero) return '';
+      const label = lot.is_resto ? 'Lote 11' : `Lote ${lot.lote}`;
+      const inner = hero.type === 'video'
+        ? `<video src="${hero.src}" ${hero.poster ? `poster="${hero.poster}"` : ''} autoplay muted loop playsinline></video>`
+        : `<img src="${hero.src}" alt="${hero.caption || ''}">`;
+      return `<div class="panel-hero">${inner}<span class="panel-hero-tag">${label}</span></div>`;
+    }
 
     function renderPanel(lot){
       const statusKey = lot.status;
-      const isCommon = lot.type === 'comun';
+      const label = lot.is_resto ? 'Lote 11 (Resto)' : 'Lote ' + lot.lote;
+      const media = LOTES_MEDIA[lot.lote] || [];
+
+      let mediaHtml;
+      if (media.length){
+        const visible = media.slice(0, 3);
+        const extra = media.length - visible.length;
+        const thumbs = visible.map((m, i) => {
+          const img = m.type === 'video' ? (m.poster || '') : m.src;
+          const isLast = i === visible.length - 1 && extra > 0;
+          return `<button class="media-thumb ${m.type === 'video' ? 'is-video' : ''}" data-lote="${lot.lote}" data-idx="${i}" aria-label="Ver ${m.caption || 'medio'}">
+            ${img ? `<img src="${img}" alt="${m.caption || ''}" loading="lazy">` : ''}
+            ${isLast ? `<span class="media-more" style="position:absolute;inset:0;background:rgba(16,32,22,.62);color:#fffdf8;">+${extra}</span>` : ''}
+          </button>`;
+        }).join('');
+        mediaHtml = `<div class="panel-media">
+            <div class="panel-media-label">Fotos y video del lote</div>
+            <div class="panel-media-grid">${thumbs}</div>
+          </div>`;
+      } else {
+        mediaHtml = `<p class="panel-nomedia">Fotografías de este lote próximamente.</p>`;
+      }
+
       panel.innerHTML = `
+        ${heroHtml(lot, media)}
         <span class="panel-status status-${statusKey}">${STATUS_LABEL[statusKey]}</span>
-        <h3>${isCommon ? 'Área común' : 'Lote ' + lot.code}</h3>
+        <h3>${label}</h3>
         <div class="panel-area">
-          <span>Superficie (calculada del levantamiento)</span>
-          ${lot.area.toLocaleString('es-MX')} m²
+          <span>Superficie oficial (plano firmado)</span>
+          ${lot.area.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})} m²
         </div>
-        ${isCommon
-          ? '<p style="color:var(--ink-soft);font-size:0.9rem;">Esta zona forma parte del área común / bosque del fraccionamiento y no está en venta.</p>'
-          : `<a class="btn btn-gold" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, me interesa el Lote ' + lot.code + ' de Bosque Peña Alta (' + lot.area.toLocaleString('es-MX') + ' m², estatus: ' + STATUS_LABEL[statusKey] + '). ¿Me pueden dar más información?')}">Consultar este lote por WhatsApp</a>`
-        }
+        ${mediaHtml}
+        <a class="btn btn-gold" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, me interesa el ' + label + ' de Bosque Peña Alta (' + lot.area.toLocaleString('es-MX') + ' m², estatus: ' + STATUS_LABEL[statusKey] + '). ¿Me pueden dar más información?')}">Consultar este lote por WhatsApp</a>
+        ${media.length ? `<button class="panel-ficha-link" id="fichaOpenBtn">Ver ficha completa &#8599;</button>` : ''}
       `;
+
+      panel.querySelectorAll('.media-thumb').forEach(btn => {
+        btn.addEventListener('click', () => {
+          lbOpen(LOTES_MEDIA[btn.dataset.lote] || [], parseInt(btn.dataset.idx, 10));
+        });
+      });
+      const fichaBtn = document.getElementById('fichaOpenBtn');
+      if (fichaBtn) fichaBtn.addEventListener('click', () => fichaOpen(lot));
+
+      // El alto del panel puede cambiar (con o sin galería); reajustamos el mapa a la nueva altura
+      setTimeout(() => map.invalidateSize(), 60);
     }
 
+    // ---- Ficha completa (vista ampliada tipo Airbnb) ----
+    const ficha = { overlay: document.getElementById('fichaOverlay'), box: document.getElementById('fichaBox'), idx: 0, media: [] };
+
+    function fichaRenderMedia(){
+      const m = ficha.media[ficha.idx];
+      const stage = ficha.box.querySelector('.ficha-media');
+      if (!m || !stage) return;
+      stage.querySelector('.ficha-media-content')?.remove();
+      const content = document.createElement('div');
+      content.className = 'ficha-media-content';
+      content.style.cssText = 'position:absolute;inset:0;';
+      content.innerHTML = m.type === 'video'
+        ? `<video src="${m.src}" ${m.poster ? `poster="${m.poster}"` : ''} autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>`
+        : `<img src="${m.src}" alt="${m.caption || ''}" style="width:100%;height:100%;object-fit:cover;">`;
+      stage.prepend(content);
+      stage.querySelectorAll('.ficha-media-strip button').forEach((b, i) => b.classList.toggle('is-active', i === ficha.idx));
+    }
+
+    function fichaOpen(lot){
+      const label = lot.is_resto ? 'Lote 11 (Resto)' : 'Lote ' + lot.lote;
+      const statusKey = lot.status;
+      ficha.media = LOTES_MEDIA[lot.lote] || [];
+      ficha.idx = 0;
+
+      // Orientación aproximada: posición del lote respecto al centro del fraccionamiento
+      const dLat = lot.centroid[0] - LOTES_DATA.center[0];
+      const dLng = lot.centroid[1] - LOTES_DATA.center[1];
+      const ns = dLat >= 0 ? 'Norte' : 'Sur';
+      const ew = dLng >= 0 ? 'Este' : 'Oeste';
+
+      ficha.box.innerHTML = `
+        <div class="ficha-media">
+          ${ficha.media.length > 1 ? `
+            <button class="ficha-nav ficha-prev" id="fichaPrevBtn" aria-label="Anterior">&#8249;</button>
+            <button class="ficha-nav ficha-next" id="fichaNextBtn" aria-label="Siguiente">&#8250;</button>
+          ` : ''}
+          <div class="ficha-media-strip">${ficha.media.map((_, i) => `<button data-i="${i}"></button>`).join('')}</div>
+        </div>
+        <div class="ficha-info">
+          <span class="eyebrow-line">Bosque Peña Alta · Tapalpa</span>
+          <h3>${label}</h3>
+          <span class="panel-status status-${statusKey}" style="align-self:flex-start;">${STATUS_LABEL[statusKey]}</span>
+          <div class="ficha-specs" style="margin-top:18px;">
+            <div><div class="ficha-spec-label">Superficie</div><div class="ficha-spec-value">${lot.area.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2})} m²</div></div>
+            <div><div class="ficha-spec-label">Ubicación relativa</div><div class="ficha-spec-value">${ns}-${ew} del fraccionamiento</div></div>
+            <div><div class="ficha-spec-label">Uso de suelo</div><div class="ficha-spec-value">Cerril</div></div>
+            <div><div class="ficha-spec-label">Fase</div><div class="ficha-spec-value">Fase 1 de 2</div></div>
+          </div>
+          <a class="btn btn-gold" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, quiero agendar una visita al ' + label + ' de Bosque Peña Alta.')}">Agendar visita</a>
+          <a class="btn btn-outline-dark" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, me interesa el ' + label + ' de Bosque Peña Alta (' + lot.area.toLocaleString('es-MX') + ' m²). ¿Me pueden dar más información?')}">Consultar por WhatsApp</a>
+        </div>
+      `;
+      if (ficha.media.length){
+        fichaRenderMedia();
+        ficha.box.querySelectorAll('.ficha-media-strip button').forEach(btn => {
+          btn.addEventListener('click', () => { ficha.idx = parseInt(btn.dataset.i, 10); fichaRenderMedia(); });
+        });
+        const prevBtn = document.getElementById('fichaPrevBtn');
+        const nextBtn = document.getElementById('fichaNextBtn');
+        if (prevBtn) prevBtn.addEventListener('click', () => { ficha.idx = (ficha.idx - 1 + ficha.media.length) % ficha.media.length; fichaRenderMedia(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { ficha.idx = (ficha.idx + 1) % ficha.media.length; fichaRenderMedia(); });
+      }
+      ficha.overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function fichaClose(){
+      ficha.overlay.classList.remove('is-open');
+      ficha.box.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+    document.getElementById('fichaClose').addEventListener('click', fichaClose);
+    ficha.overlay.addEventListener('click', e => { if (e.target === ficha.overlay) fichaClose(); });
+    document.addEventListener('keydown', e => {
+      if (!ficha.overlay.classList.contains('is-open') || !ficha.media.length) return;
+      if (e.key === 'Escape') fichaClose();
+      if (e.key === 'ArrowLeft'){ ficha.idx = (ficha.idx - 1 + ficha.media.length) % ficha.media.length; fichaRenderMedia(); }
+      if (e.key === 'ArrowRight'){ ficha.idx = (ficha.idx + 1) % ficha.media.length; fichaRenderMedia(); }
+    });
+
+    // ---- Polígonos ----
+    const polygonsByLote = {};
     LOTES_DATA.lots.forEach(lot => {
       const color = STATUS_COLOR[lot.status];
       const polygon = L.polygon(lot.coords, {
         color: '#fffdf8',
-        weight: lot.type === 'comun' ? 1 : 1.5,
+        weight: 1.5,
         opacity: 0.85,
         fillColor: color,
-        fillOpacity: lot.type === 'comun' ? 0.28 : 0.55,
-        dashArray: lot.type === 'comun' ? '4 4' : null
+        fillOpacity: 0.55
       }).addTo(map);
+      polygonsByLote[lot.lote] = polygon;
 
-      const label = lot.type === 'comun' ? 'Área común' : `Lote ${lot.code}`;
-      polygon.bindTooltip(label, { sticky: true, direction: 'top', className: 'lote-tooltip' });
+      const media = LOTES_MEDIA[lot.lote] || [];
+      const label = lot.is_resto ? 'Lote 11' : `Lote ${lot.lote}`;
+      polygon.bindTooltip(
+        media.length ? `${label} · ${media.length} foto${media.length > 1 ? 's' : ''}/video` : label,
+        { sticky: true, direction: 'top', className: 'lote-tooltip' }
+      );
 
-      polygon.on('mouseover', () => polygon.setStyle({ fillOpacity: lot.type === 'comun' ? 0.4 : 0.75, weight: 2.5 }));
-      polygon.on('mouseout', () => polygon.setStyle({ fillOpacity: lot.type === 'comun' ? 0.28 : 0.55, weight: lot.type === 'comun' ? 1 : 1.5 }));
+      // Indicador permanente sobre los lotes que ya tienen material
+      if (media.length){
+        L.marker(lot.centroid, {
+          icon: L.divIcon({
+            className: 'lote-badge',
+            html: `<span class="lote-badge-inner">&#9679; ${label} · ver fotos</span>`,
+            iconSize: [0, 0]
+          })
+        }).addTo(map).on('click', () => renderPanel(lot));
+      }
+
+      polygon.on('mouseover', () => polygon.setStyle({ fillOpacity: 0.75, weight: 2.5 }));
+      polygon.on('mouseout', () => polygon.setStyle({ fillOpacity: 0.55, weight: 1.5 }));
       polygon.on('click', () => renderPanel(lot));
     });
+
+    // ---- Recorrido guiado ----
+    const tourBtn = document.getElementById('tourBtn');
+    const tourBanner = document.getElementById('tourBanner');
+    const tourBannerText = document.getElementById('tourBannerText');
+    const tourStopBtn = document.getElementById('tourStopBtn');
+    const sortedLots = [...LOTES_DATA.lots].sort((a, b) => a.lote - b.lote);
+    let tourActive = false;
+    let tourTimer = null;
+    const STEP_MS = 4200;
+
+    function tourHighlight(lot, on){
+      const p = polygonsByLote[lot.lote];
+      if (!p) return;
+      p.setStyle(on ? { weight: 4, fillOpacity: 0.85 } : { weight: 1.5, fillOpacity: 0.55 });
+    }
+
+    function tourStep(i){
+      if (!tourActive) return;
+      if (i >= sortedLots.length){ tourEnd(); return; }
+      const lot = sortedLots[i];
+      const label = lot.is_resto ? 'Lote 11 (Resto)' : `Lote ${lot.lote}`;
+      sortedLots.forEach(l => tourHighlight(l, false));
+      tourHighlight(lot, true);
+      map.flyTo(lot.centroid, 18, { duration: 1.1 });
+      renderPanel(lot);
+      tourBannerText.textContent = `Recorriendo el fraccionamiento — ${label} (${i + 1}/${sortedLots.length})`;
+      tourTimer = setTimeout(() => tourStep(i + 1), STEP_MS);
+    }
+
+    function tourStart(){
+      tourActive = true;
+      tourBtn.classList.add('is-active');
+      tourBtn.innerHTML = '<span class="tour-btn-icon">&#9632;</span> Detener recorrido';
+      tourBanner.classList.add('is-open');
+      map.scrollWheelZoom.disable();
+      tourStep(0);
+    }
+    function tourEnd(){
+      tourActive = false;
+      clearTimeout(tourTimer);
+      tourBtn.classList.remove('is-active');
+      tourBtn.innerHTML = '<span class="tour-btn-icon">&#9654;</span> Ver el fraccionamiento';
+      tourBanner.classList.remove('is-open');
+      sortedLots.forEach(l => tourHighlight(l, false));
+      map.flyTo(LOTES_DATA.center, 18, { duration: 1.1 });
+    }
+    tourBtn.addEventListener('click', () => { tourActive ? tourEnd() : tourStart(); });
+    tourStopBtn.addEventListener('click', tourEnd);
 
     setTimeout(() => map.invalidateSize(), 200);
   }

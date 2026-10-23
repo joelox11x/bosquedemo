@@ -2274,7 +2274,9 @@ async function crearVisor({ root, bridge, base = 'visor3d/modelo/' }) {
   const ui = construirUI(root);
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = matchMedia('(pointer: coarse)').matches;
-  const lowEnd = coarse || (navigator.hardwareConcurrency || 8) <= 4;
+  // perfil automático; se puede forzar con ?calidad=movil o ?calidad=alta en la URL
+  const forced = new URLSearchParams(location.search).get('calidad');
+  const lowEnd = forced === 'movil' ? true : forced === 'alta' ? false : (coarse || (navigator.hardwareConcurrency || 8) <= 4);
   const DUR = reduceMotion ? 0.35 : 1;
   // Perfil de calidad. Móvil/tableta: materiales ligeros, niveles de detalle cortos, sin viento y render bajo demanda.
   const Q = lowEnd
@@ -2329,11 +2331,15 @@ async function crearVisor({ root, bridge, base = 'visor3d/modelo/' }) {
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envRT = pmrem.fromScene(skyScene);
   scene.environment = envRT.texture;
-  scene.environmentIntensity = 0.55;
+  scene.environmentIntensity = Q.lambert ? 0.25 : 0.55;
 
   // con materiales Lambert (móvil) no hay luz de entorno: se compensa con más luz hemisférica
   const hemi = new THREE.HemisphereLight(0xdde9ff, 0x3b4a2c, Q.lambert ? 1.55 : 1.05);
   scene.add(hemi);
+  // Lambert no recibe la luz del cielo (IBL) que sí recibe el material de escritorio: se compensa con luz ambiental
+  // (valores calibrados midiendo la luminancia del verde en ambos perfiles con la misma cámara)
+  const amb = new THREE.AmbientLight(0xbcd3ff, Q.lambert ? 2.3 : 0);
+  scene.add(amb);
   const sun = new THREE.DirectionalLight(0xfff0d8, 2.7);
   sun.castShadow = true;
   sun.shadow.mapSize.set(Q.shadow, Q.shadow);
@@ -3454,7 +3460,7 @@ async function crearVisor({ root, bridge, base = 'visor3d/modelo/' }) {
     get selected() { return selected; },
     resize,
     destroy,
-    _debug: { scene, camera, renderer, controls, nodes, lots, moveTo, walkPath, invalidate, Q, get tweens() { return [...tweens.keys()]; }, get visible() { return visible; } },
+    _debug: { scene, camera, renderer, controls, nodes, lots, moveTo, walkPath, invalidate, Q, hemi, amb, sun, get tweens() { return [...tweens.keys()]; }, get visible() { return visible; } },
   };
 }
 

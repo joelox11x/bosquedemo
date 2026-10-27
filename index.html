@@ -1793,6 +1793,40 @@ burger.addEventListener('click', openMobilePanel);
 closeBtn.addEventListener('click', closeMobilePanel);
 menuLinks.forEach(a => a.addEventListener('click', closeMobilePanel));
 
+// Saltos a secciones (#...): las fotos y la maqueta 3D de arriba pueden crecer mientras
+// la página se desplaza y dejar al visitante en la sección anterior; se corrige el destino
+// hasta que la página se estabiliza (se cancela si el usuario toca o desplaza).
+function goToSection(el){
+  const t0 = performance.now();
+  let cancelled = false, lastY = -1, tries = 0;
+  const cancel = () => { cancelled = true; };
+  window.addEventListener('touchstart', cancel, { once:true, passive:true });
+  window.addEventListener('wheel', cancel, { once:true, passive:true });
+  const go = () => el.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block:'start' });
+  go();
+  (function check(){
+    if (cancelled || performance.now() - t0 > 6000) return;
+    const off = el.getBoundingClientRect().top, y = window.scrollY;
+    if (y === lastY && Math.abs(off) > 3) {          // el desplazamiento terminó pero no quedó en su sitio
+      const fondo = y + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      if ((fondo && off > 0) || ++tries > 8) return; // final de la página: no se puede subir más
+      go();
+    }
+    lastY = y;
+    setTimeout(check, 220);
+  })();
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented) return;
+  const id = decodeURIComponent(a.getAttribute('href').slice(1));
+  const el = id && document.getElementById(id);
+  if (!el) return;
+  e.preventDefault();
+  goToSection(el);
+  try { history.replaceState(null, '', '#' + id); } catch (_) {}
+});
+
 // Reveal on scroll
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
